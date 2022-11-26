@@ -30,6 +30,20 @@ async function run() {
             const result = await userCollection.insertOne(user)
             res.send(result)
         })
+
+        app.put("/users/:id", async (req, res) => {
+            const id = req.params.id
+            console.log(id)
+            const filter = { _id: ObjectId(id) }
+            const doc = {
+                $set: {
+                    status: "active"
+                }
+            }
+            const result = await userCollection.updateOne(filter, doc)
+            res.send(result)
+
+        })
     }
     finally {
 
