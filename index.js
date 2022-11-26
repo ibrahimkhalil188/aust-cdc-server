@@ -1,0 +1,45 @@
+const express = require("express")
+const app = express()
+const port = process.env.PORT || 5000
+const cors = require("cors")
+require("dotenv").config()
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+
+app.use(cors())
+app.use(express.json())
+const uri = `mongodb+srv://austcdc:cp0pTbIDGlfEIfSr@cluster0.shojg7d.mongodb.net/?retryWrites=true&w=majority`;
+
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+
+async function run() {
+    try {
+        console.log("DB connected");
+        const userCollection = client.db("austcdc").collection("users");
+
+
+        app.get("/users", async (req, res) => {
+            const query = {}
+            const cursor = userCollection.find(query)
+            const products = await cursor.toArray()
+            const result = products.reverse()
+            res.send(result)
+        })
+
+        app.post("/users", async (req, res) => {
+            const user = req.body
+            const result = await userCollection.insertOne(user)
+            res.send(result)
+        })
+    }
+    finally {
+
+    }
+}
+run().catch(console.dir)
+app.get("/", (req, res) => {
+    res.send("Aust Cdc")
+})
+
+app.listen(port, () => {
+    console.log("Aust Cdc", port)
+})
