@@ -3,7 +3,7 @@ const app = express()
 const port = process.env.PORT || 5000
 const cors = require("cors")
 require("dotenv").config()
-const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId, CURSOR_FLAGS } = require('mongodb');
 
 app.use(cors())
 app.use(express.json())
@@ -15,6 +15,7 @@ async function run() {
     try {
         console.log("DB connected");
         const userCollection = client.db("austcdc").collection("users");
+        const ExecutiveCollection = client.db("austcdc").collection("ExecutiveMemberList");
 
 
         app.get("/users", async (req, res) => {
@@ -29,6 +30,13 @@ async function run() {
             const user = req.body
             const result = await userCollection.insertOne(user)
             res.send(result)
+        })
+
+        app.get("/executive",async(req,res)=>{
+            const query = {};
+            const cursor = ExecutiveCollection.find(query)
+            const executiveMember = await cursor.toArray();
+            res.send(executiveMember);
         })
 
         app.put("/users/:id", async (req, res) => {
