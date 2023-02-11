@@ -20,6 +20,7 @@ async function run() {
         console.log("DB connected");
         const userCollection = client.db("austcdc").collection("users");
         const ExecutiveCollection = client.db("austcdc").collection("ExecutiveMemberList");
+        const emailCollection = client.db("austcdc").collection("emails")
 
 
         app.get("/users", async (req, res) => {
@@ -35,7 +36,18 @@ async function run() {
             const result = await userCollection.insertOne(user)
             res.send(result)
         })
-
+        app.post("/userEmail",async(req,res)=>{
+            const email = req.body;
+            const result = await emailCollection.insertOne(email);
+            res.send(result);
+        })
+        app.get("/userEmail",async(req,res)=>{
+            const query = {}
+            const cursor = emailCollection.find(query)
+            const emails = await cursor.toArray()
+            const result = emails.reverse()
+            res.send(result)
+        })
         app.get("/executive",async(req,res)=>{
             const query = {};
             const cursor = ExecutiveCollection.find(query)
