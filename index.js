@@ -59,6 +59,8 @@ async function run() {
         app.get("/SubExecutive",async(req,res)=>{
             const query = {};
             const cursor = SubExecutiveCollection.find(query);
+            const SubExecutiveMember = await cursor.toArray();
+            console.log(SubExecutiveMember);
             res.send(SubExecutiveMember);
         })
 
