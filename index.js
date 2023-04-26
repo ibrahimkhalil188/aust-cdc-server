@@ -37,7 +37,7 @@ async function run() {
     const emailCollection = client.db("austcdc").collection("emails");
     const panelStatusCollection = client.db("austcdc").collection("panelStatus");
     const eventCollection = client.db("austcdc").collection("newEvent");
-
+const homePageSliderCollection = client.db("austcdc").collection("homePageSliderImages")
     app.get("/users", async (req, res) => {
       const query = {};
       const cursor = userCollection.find(query);
@@ -92,11 +92,17 @@ async function run() {
       const result = await panelStatusCollection.findOne({});
       res.send(result);
     });
-    app.get("/Event", async (req, res) => {
+    app.get("/homePageSlider",async(req,res)=>{
+      const query = {};
+      const cursor = homePageSliderCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    })
+    app.get("/recentEvent",async(req,res)=>{
       const result = await eventCollection.findOne({});
       res.send(result);
-    });
-     app.put("/Event/:id", async (req, res) => {
+    })
+     app.put("/recentEvent/:id", async (req, res) => {
       const id = req.params.id;
       const data = req.body;
       console.log(data)
