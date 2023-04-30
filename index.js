@@ -101,6 +101,17 @@ const latestEventCollection = client.db("austcdc").collection("latestEvent");
       const result = await cursor.toArray();
       res.send(result);
     })
+    app.put("/homePageSlider/:id",async(req,res)=>{
+      const id = req.params.id;
+      const data = req.body;
+      console.log(data);
+      const filter={id};
+      const doc = {
+        $set:{...data}
+      };
+      const result = await homePageSliderCollection.updateOne(filter,doc);
+      res.send(result);
+    })
     app.get("/recentEvent",async(req,res)=>{
       const result = await eventCollection.findOne({});
       res.send(result);
@@ -140,5 +151,31 @@ app.listen(port, () => {
   console.log("Aust Cdc", port);
 });
 
+
 /* 
+
+_id
+644b06b9b34d73f612a4dff0
+id
+"1"
+img
+"https://i.ibb.co/Pt7vb2S/homepage1-01.png"
+_id
+644b06b9b34d73f612a4dff1
+id
+"2"
+img
+"https://i.ibb.co/KNCBBb8/homepage2-01.png"
+_id
+644b06b9b34d73f612a4dff2
+id
+"3"
+img
+"https://i.ibb.co/MP8xmfQ/homepage3-01.png"
+_id
+644b06b9b34d73f612a4dff3
+id
+"4"
+img
+"https://i.ibb.co/9Hq5qw8/homepage4-01.png"
 */
