@@ -104,7 +104,6 @@ const latestEventCollection = client.db("austcdc").collection("latestEvent");
     app.put("/homePageSlider/:id",async(req,res)=>{
       const id = req.params.id;
       const data = req.body;
-      console.log(data);
       const filter={id};
       const doc = {
         $set:{...data}
@@ -130,8 +129,19 @@ const latestEventCollection = client.db("austcdc").collection("latestEvent");
     app.get("/latestNews",async(req,res)=>{
       const query = {};
       const cursor = newsCollection.find(query);
-      const result = await cursor.toArray();
+      const result = (await cursor.toArray()).reverse();
       res.send(result);
+    })
+    app.post("/latestNews",async(req,res)=>{
+      const data = req.body;
+      const result = await newsCollection.insertOne(data);
+      res.send(result);
+    })
+    app.delete("/latestNews/:id",async(req,res)=>{
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) }
+      const result = await newsCollection.deleteOne(query)
+      res.send(result)
     })
     app.get("/latestEvent",async(req,res)=>{
       const query ={};
@@ -150,6 +160,8 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log("Aust Cdc", port);
 });
+
+
 
 
 /* 
