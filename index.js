@@ -31,6 +31,9 @@ async function run() {
     const ExecutiveCollection = client
       .db("austcdc")
       .collection("ExecutiveMemberList");
+    const Spring22ExecutiveCollection = client
+      .db("austcdc")
+      .collection("Spring22ExecutiveMember");
     const SubExecutiveCollection = client
       .db("austcdc")
       .collection("SubExecutiveMemberList");
@@ -72,6 +75,12 @@ const latestEventCollection = client.db("austcdc").collection("latestEvent");
       const executiveMember = await cursor.toArray();
       console.log(executiveMember);
       res.send(executiveMember);
+    });
+    app.get("/Spring22executive", async (req, res) => {
+      const query = {};
+      const cursor = Spring22ExecutiveCollection.find(query);
+      const Spring22ExecutiveMember = await cursor.toArray();
+      res.send(Spring22ExecutiveMember);
     });
     app.get("/SubExecutive", async (req, res) => {
       const query = {};
