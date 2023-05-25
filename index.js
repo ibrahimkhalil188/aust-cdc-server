@@ -34,16 +34,34 @@ async function run() {
     const Spring22ExecutiveCollection = client
       .db("austcdc")
       .collection("Spring22ExecutiveMember");
+    const Spring22SubExecutiveCollection = client
+      .db("austcdc")
+      .collection("Spring22SubExecutiveMember");
     const SubExecutiveCollection = client
       .db("austcdc")
       .collection("SubExecutiveMemberList");
     const emailCollection = client.db("austcdc").collection("emails");
-    const panelStatusCollection = client.db("austcdc").collection("panelStatus");
-    const eventCollection = client.db("austcdc").collection("newEvent");
-const homePageSliderCollection = client.db("austcdc").collection("homePageSliderImages")
+    const panelStatusCollection = client
+      .db("austcdc")
+      .collection("panelStatus");
+    const AffiliationCompaniesCollection = client
+      .db("austcdc")
+      .collection("AffiliationCompanies");
 
-const newsCollection = client.db("austcdc").collection("latestNews");
-const latestEventCollection = client.db("austcdc").collection("latestEvent");
+    const AffiliationUniversitiesCollection = client
+      .db("austcdc")
+      .collection("AffiliationUniversities");
+
+    const eventCollection = client.db("austcdc").collection("newEvent");
+    const homePageSliderCollection = client
+      .db("austcdc")
+      .collection("homePageSliderImages");
+
+    const newsCollection = client.db("austcdc").collection("latestNews");
+    const latestEventCollection = client
+      .db("austcdc")
+      .collection("latestEvent");
+
     app.get("/users", async (req, res) => {
       const query = {};
       const cursor = userCollection.find(query);
@@ -57,6 +75,18 @@ const latestEventCollection = client.db("austcdc").collection("latestEvent");
       const result = await userCollection.insertOne(user);
       res.send(result);
     });
+
+    app.post("/affiliationCompanies", async (req, res) => {
+      const url = req.body;
+      const result = await AffiliationCompaniesCollection.insertOne(url);
+      res.send(result);
+    });
+    app.post("/affiliationUniversities", async (req, res) => {
+      const url = req.body;
+      const result = await AffiliationUniversitiesCollection.insertOne(url);
+      res.send(result);
+    });
+
     app.post("/userEmail", async (req, res) => {
       const email = req.body;
       const result = await emailCollection.insertOne(email);
@@ -82,6 +112,12 @@ const latestEventCollection = client.db("austcdc").collection("latestEvent");
       const Spring22ExecutiveMember = await cursor.toArray();
       res.send(Spring22ExecutiveMember);
     });
+    app.get("/Spring22SubExecutive", async (req, res) => {
+      const query = {};
+      const cursor = Spring22SubExecutiveCollection.find(query);
+      const Spring22SubExecutiveMember = await cursor.toArray();
+      res.send(Spring22SubExecutiveMember);
+    });
     app.get("/SubExecutive", async (req, res) => {
       const query = {};
       const cursor = SubExecutiveCollection.find(query);
@@ -104,60 +140,60 @@ const latestEventCollection = client.db("austcdc").collection("latestEvent");
       const result = await panelStatusCollection.findOne({});
       res.send(result);
     });
-    app.get("/homePageSlider",async(req,res)=>{
+    app.get("/homePageSlider", async (req, res) => {
       const query = {};
       const cursor = homePageSliderCollection.find(query);
       const result = await cursor.toArray();
       res.send(result);
-    })
-    app.put("/homePageSlider/:id",async(req,res)=>{
+    });
+    app.put("/homePageSlider/:id", async (req, res) => {
       const id = req.params.id;
       const data = req.body;
-      const filter={id};
+      const filter = { id };
       const doc = {
-        $set:{...data}
+        $set: { ...data },
       };
-      const result = await homePageSliderCollection.updateOne(filter,doc);
+      const result = await homePageSliderCollection.updateOne(filter, doc);
       res.send(result);
-    })
-    app.get("/recentEvent",async(req,res)=>{
+    });
+    app.get("/recentEvent", async (req, res) => {
       const result = await eventCollection.findOne({});
       res.send(result);
-    })
-     app.put("/recentEvent/:id", async (req, res) => {
+    });
+    app.put("/recentEvent/:id", async (req, res) => {
       const id = req.params.id;
       const data = req.body;
-      console.log(data)
+      console.log(data);
       const filter = { _id: ObjectId(id) };
       const doc = {
         $set: { ...data },
       };
       const result = await eventCollection.updateOne(filter, doc);
       res.send(result);
-    }); 
-    app.get("/latestNews",async(req,res)=>{
+    });
+    app.get("/latestNews", async (req, res) => {
       const query = {};
       const cursor = newsCollection.find(query);
-      const result = (await cursor.toArray()).reverse();
+      const result = await cursor.toArray();
       res.send(result);
-    })
-    app.post("/latestNews",async(req,res)=>{
+    });
+    app.post("/latestNews", async (req, res) => {
       const data = req.body;
       const result = await newsCollection.insertOne(data);
       res.send(result);
-    })
-    app.delete("/latestNews/:id",async(req,res)=>{
+    });
+    app.delete("/latestNews/:id", async (req, res) => {
       const id = req.params.id;
-      const query = { _id: ObjectId(id) }
-      const result = await newsCollection.deleteOne(query)
-      res.send(result)
-    })
-    app.get("/latestEvent",async(req,res)=>{
-      const query ={};
+      const query = { _id: ObjectId(id) };
+      const result = await newsCollection.deleteOne(query);
+      res.send(result);
+    });
+    app.get("/latestEvent", async (req, res) => {
+      const query = {};
       const cursor = latestEventCollection.find(query);
       const result = await cursor.toArray();
       res.send(result);
-    })
+    });
   } finally {
   }
 }
@@ -171,32 +207,3 @@ app.listen(port, () => {
 });
 
 
-
-
-/* 
-
-_id
-644b06b9b34d73f612a4dff0
-id
-"1"
-img
-"https://i.ibb.co/Pt7vb2S/homepage1-01.png"
-_id
-644b06b9b34d73f612a4dff1
-id
-"2"
-img
-"https://i.ibb.co/KNCBBb8/homepage2-01.png"
-_id
-644b06b9b34d73f612a4dff2
-id
-"3"
-img
-"https://i.ibb.co/MP8xmfQ/homepage3-01.png"
-_id
-644b06b9b34d73f612a4dff3
-id
-"4"
-img
-"https://i.ibb.co/9Hq5qw8/homepage4-01.png"
-*/
