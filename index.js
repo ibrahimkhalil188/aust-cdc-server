@@ -11,12 +11,12 @@ const {
 } = require("mongodb");
 
 app.use(cors());
-app.use((req,res,next)=>{
-  res.setHeader('Access-Control-Allow-Origin','*');
-  res.setHeader('Access-Control-Allow-Methods','GET,POST,PUT,PATCH,DELETE');
-  res.setHeader('Access-Control-Allow-Methods','Content-Type','Authorization');
-  next(); 
-})
+// app.use((req,res,next)=>{
+//   res.setHeader('Access-Control-Allow-Origin','*');
+//   res.setHeader('Access-Control-Allow-Methods','GET,POST,PUT,PATCH,DELETE');
+//   res.setHeader('Access-Control-Allow-Methods','Content-Type','Authorization');
+//   next(); 
+// })
 app.use(express.json());
 const uri = `mongodb+srv://austcdc:cp0pTbIDGlfEIfSr@cluster0.shojg7d.mongodb.net/?retryWrites=true&w=majority`;
 
@@ -189,7 +189,7 @@ async function run() {
     app.get("/latestNews", async (req, res) => {
       const query = {};
       const cursor = newsCollection.find(query);
-      const result = (await cursor.toArray()).reverse();
+      const result = await cursor.toArray();
       res.send(result);
     });
     app.post("/latestNews", async (req, res) => {
@@ -220,3 +220,5 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log("Aust Cdc", port);
 });
+
+
