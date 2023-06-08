@@ -83,12 +83,25 @@ async function run() {
       const result = await AffiliationCompaniesCollection.insertOne(url);
       res.send(result);
     });
+     app.get("/affiliationCompanies", async (req, res) => {
+      const query = {};
+      const cursor = AffiliationCompaniesCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    }); 
+    
     app.post("/affiliationUniversities", async (req, res) => {
       const url = req.body;
       const result = await AffiliationUniversitiesCollection.insertOne(url);
       res.send(result);
     });
-
+     app.get("/affiliationUniversities", async (req, res) => {
+      const query = {};
+      const cursor = AffiliationUniversitiesCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+ 
     app.post("/userEmail", async (req, res) => {
       const email = req.body;
       const result = await emailCollection.insertOne(email);
