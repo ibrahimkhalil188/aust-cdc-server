@@ -10,7 +10,11 @@ const {
   CURSOR_FLAGS,
 } = require("mongodb");
 
-app.use(cors());
+app.use(cors(
+  {
+    origin:"https://austcdc.org/"
+  }
+));
 app.use(express.json());
 const uri = `mongodb+srv://austcdc:cp0pTbIDGlfEIfSr@cluster0.shojg7d.mongodb.net/?retryWrites=true&w=majority`;
 
@@ -150,7 +154,6 @@ async function run() {
       res.send(result);
     });
     app.get("/homePageSlider", async (req, res) => {
-      res.header("Access-Control-Allow-Origin", "*");
       const query = {};
       const cursor = homePageSliderCollection.find(query);
       const result = await cursor.toArray();
