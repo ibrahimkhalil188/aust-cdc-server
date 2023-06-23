@@ -150,6 +150,7 @@ async function run() {
       res.send(result);
     });
     app.get("/homePageSlider", async (req, res) => {
+      res.header("Access-Control-Allow-Origin", "*");
       const query = {};
       const cursor = homePageSliderCollection.find(query);
       const result = await cursor.toArray();
