@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 5000;
-const cors = require("cors");
+const cors = require('cors');
 require("dotenv").config();
 const {
   MongoClient,
@@ -10,7 +10,12 @@ const {
   CURSOR_FLAGS,
 } = require("mongodb");
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://austcdc.org',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization'],
+  credentials: true
+}))
 app.use(express.json());
 const uri = `mongodb+srv://austcdc:cp0pTbIDGlfEIfSr@cluster0.shojg7d.mongodb.net/?retryWrites=true&w=majority`;
 
