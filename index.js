@@ -10,11 +10,7 @@ const {
   CURSOR_FLAGS,
 } = require("mongodb");
 
-app.use(cors(
-  {
-    origin:"https://austcdc.org/"
-  }
-));
+app.use(cors());
 app.use(express.json());
 const uri = `mongodb+srv://austcdc:cp0pTbIDGlfEIfSr@cluster0.shojg7d.mongodb.net/?retryWrites=true&w=majority`;
 
