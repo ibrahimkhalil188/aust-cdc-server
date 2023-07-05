@@ -9,7 +9,9 @@ const {
   ObjectId,
   CURSOR_FLAGS,
 } = require("mongodb");
+
 app.use(cors({ origin: true, credentials: true }));
+
 app.use(express.json());
 const uri = `mongodb+srv://austcdc:cp0pTbIDGlfEIfSr@cluster0.shojg7d.mongodb.net/?retryWrites=true&w=majority`;
 
@@ -56,6 +58,12 @@ async function run() {
     const latestEventCollection = client
       .db("austcdc")
       .collection("latestEvent");
+
+      app.use(function(req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        next();
+      });
 
     app.get("/users", async (req, res) => {
       const query = {};
